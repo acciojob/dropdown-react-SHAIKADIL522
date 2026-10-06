@@ -138,15 +138,61 @@ const states = [{
 }];
 
 
-function App() 
-{
-	// Do not alter/remove main div
+function App() {
+	const [stateIdx, setStateIdx] = useState(0);
+	const [cityIdx, setCityIdx] = useState(0);
+	const [landmarkIdx, setLandmarkIdx] = useState(0);
+  
+	// Derived values: no useEffect needed
+	const state = states[stateIdx];
+	const city = state.city[cityIdx];
+	const landmark = city.landmarks[landmarkIdx];
+  
+	const handleState = (e) => {
+	  setStateIdx(Number(e.target.value));
+	  setCityIdx(0);
+	  setLandmarkIdx(0);
+	};
+  
+	const handleCity = (e) => {
+	  setCityIdx(Number(e.target.value));
+	  setLandmarkIdx(0);
+	};
+  
+	const handleLandmark = (e) => setLandmarkIdx(Number(e.target.value));
+  
 	return (
-	<div id="main">
-		
-	</div>
+	  // Do not alter/remove main div
+	  <div id="main">
+		<select id="state" value={stateIdx} onChange={handleState}>
+		  {states.map((s, i) => (
+			<option key={s.name} value={i}>{s.name}</option>
+		  ))}
+		</select>
+  
+		<select id="city" value={cityIdx} onChange={handleCity}>
+		  {state.city.map((c, i) => (
+			<option key={c.name} value={i}>{c.name}</option>
+		  ))}
+		</select>
+  
+		<select id="landmark" value={landmarkIdx} onChange={handleLandmark}>
+		  {city.landmarks.map((l, i) => (
+			<option key={l.name} value={i}>{l.name}</option>
+		  ))}
+		</select>
+  
+		<div id="state-name">{state.name}</div>
+		<div id="state-description">{state.description}</div>
+  
+		<div id="city-name">{city.name}</div>
+		<div id="city-description">{city.description}</div>
+  
+		<div id="landmark-name">{landmark.name}</div>
+		<div id="landmark-description">{landmark.description}</div>
+	  </div>
 	);
-}
+  }
 
 
 export default App;
